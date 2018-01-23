@@ -1,9 +1,9 @@
 /*
  * Grakn - A Distributed Semantic Database
- * Copyright (C) 2016  Grakn Labs Limited
+ * Copyright (C) 2016-2018 Grakn Labs Limited
  *
  * Grakn is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
+ * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
@@ -106,7 +106,7 @@ import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace
  */
 public class GraqlShell {
     private static final String LICENSE_PROMPT = "\n" +
-            "Grakn  Copyright (C) 2016  Grakn Labs Limited \n" +
+            "Grakn  Copyright (C) 2018  Grakn Labs Limited \n" +
             "This is free software, and you are welcome to redistribute it \n" +
             "under certain conditions; type 'license' for details.\n";
 

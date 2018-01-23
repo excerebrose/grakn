@@ -1,9 +1,9 @@
 /*
  * Grakn - A Distributed Semantic Database
- * Copyright (C) 2016  Grakn Labs Limited
+ * Copyright (C) 2016-2018 Grakn Labs Limited
  *
  * Grakn is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
+ * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
@@ -32,7 +32,7 @@ import java.util.Collections;
 import java.util.Set;
 
 /**
- * The vertex program for connected components in a graph.
+ * The vertex program for computing connected components.
  *
  * @author Jason Liu
  */
@@ -74,11 +74,11 @@ public class ConnectedComponentsVertexProgram extends GraknVertexProgram<String>
             messenger.sendMessage(messageScopeIn, id);
             messenger.sendMessage(messageScopeOut, id);
         } else {
-            update(vertex, messenger, memory);
+            updateClusterLabel(vertex, messenger, memory);
         }
     }
 
-    private void update(Vertex vertex, Messenger<String> messenger, Memory memory) {
+    private static void updateClusterLabel(Vertex vertex, Messenger<String> messenger, Memory memory) {
         String currentMax = vertex.value(CLUSTER_LABEL);
         String max = IteratorUtils.reduce(messenger.receiveMessages(), currentMax,
                 (a, b) -> a.compareTo(b) > 0 ? a : b);

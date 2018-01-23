@@ -1,9 +1,9 @@
 /*
  * Grakn - A Distributed Semantic Database
- * Copyright (C) 2016  Grakn Labs Limited
+ * Copyright (C) 2016-2018 Grakn Labs Limited
  *
  * Grakn is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
+ * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
@@ -103,7 +103,7 @@ public class GraqlController {
     private static final Logger LOG = LoggerFactory.getLogger(GraqlController.class);
     private static final RetryLogger retryLogger = new RetryLogger();
     private static final int MAX_RETRY = 10;
-    private final Printer printer;
+    private final Printer<?> printer;
     private final EngineGraknTxFactory factory;
     private final TaskManager taskManager;
     private final PostProcessor postProcessor;
@@ -112,7 +112,7 @@ public class GraqlController {
 
     public GraqlController(
             EngineGraknTxFactory factory, Service spark, TaskManager taskManager,
-            PostProcessor postProcessor, Printer printer, MetricRegistry metricRegistry
+            PostProcessor postProcessor, Printer<?> printer, MetricRegistry metricRegistry
     ) {
         this.factory = factory;
         this.taskManager = taskManager;
@@ -143,7 +143,7 @@ public class GraqlController {
         return executeFunctionWithRetrying(() -> {
             try (GraknTx tx = factory.tx(keyspace, GraknTxType.WRITE); Timer.Context context = executeExplanation.time()) {
                 Answer answer = tx.graql().infer(true).parser().<GetQuery>parseQuery(queryString).execute().stream().findFirst().orElse(new QueryAnswer());
-                return mapper.writeValueAsString(ExplanationBuilder.buildExplanation(answer, printer));
+                return mapper.writeValueAsString(ExplanationBuilder.buildExplanation(answer));
             }
         });
     }
@@ -187,7 +187,6 @@ public class GraqlController {
         return executeFunctionWithRetrying(() -> {
             try (GraknTx tx = factory.tx(keyspace, txType); Timer.Context context = executeGraql.time()) {
 
-                System.out.println("RUNNING: " + queryString);
                 QueryBuilder builder = tx.graql();
 
                 infer.ifPresent(builder::infer);

@@ -1,9 +1,9 @@
 /*
  * Grakn - A Distributed Semantic Database
- * Copyright (C) 2016  Grakn Labs Limited
+ * Copyright (C) 2016-2018 Grakn Labs Limited
  *
  * Grakn is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
+ * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
@@ -56,7 +56,8 @@ public class DegreeDistributionMapReduce extends GraknMapReduce<Set<String>> {
 
     @Override
     public void safeMap(final Vertex vertex, final MapEmitter<Serializable, Set<String>> emitter) {
-        if (selectedTypes.isEmpty() || vertexHasSelectedTypeId(vertex, selectedTypes)) {
+        if (vertex.property((String) persistentProperties.get(DegreeVertexProgram.DEGREE)).isPresent() &&
+                vertexHasSelectedTypeId(vertex, selectedTypes)) {
             emitter.emit(vertex.value((String) persistentProperties.get(DegreeVertexProgram.DEGREE)),
                     Collections.singleton(vertex.value(Schema.VertexProperty.ID.name())));
         } else {
@@ -71,6 +72,7 @@ public class DegreeDistributionMapReduce extends GraknMapReduce<Set<String>> {
 
     @Override
     public Map<Serializable, Set<String>> generateFinalResult(Iterator<KeyValue<Serializable, Set<String>>> keyValues) {
+        LOGGER.debug("MapReduce Finished !!!!!!!!");
         final Map<Serializable, Set<String>> clusterPopulation = Utility.keyValuesToMap(keyValues);
         clusterPopulation.remove(NullObject.instance());
         return clusterPopulation;

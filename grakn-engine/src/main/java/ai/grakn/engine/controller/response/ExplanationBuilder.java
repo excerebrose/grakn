@@ -1,9 +1,9 @@
 /*
  * Grakn - A Distributed Semantic Database
- * Copyright (C) 2016  Grakn Labs Limited
+ * Copyright (C) 2016-2018 Grakn Labs Limited
  *
  * Grakn is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
+ * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
@@ -18,7 +18,6 @@
 
 package ai.grakn.engine.controller.response;
 
-import ai.grakn.graql.Printer;
 import ai.grakn.graql.admin.AnswerExplanation;
 import ai.grakn.graql.admin.Unifier;
 import ai.grakn.graql.internal.query.QueryAnswer;
@@ -40,7 +39,7 @@ import java.util.List;
  */
 public class ExplanationBuilder {
 
-    public static List<Answer> buildExplanation(ai.grakn.graql.admin.Answer queryAnswer, Printer printer) {
+    public static List<Answer> buildExplanation(ai.grakn.graql.admin.Answer queryAnswer) {
         final List<Answer> explanation = new ArrayList<>();
         queryAnswer.getExplanation().getAnswers().forEach(answer -> {
             AnswerExplanation expl = answer.getExplanation();
@@ -59,7 +58,7 @@ public class ExplanationBuilder {
                         .flatMap(unifier -> rewrittenQuery.materialise(answer.unify(unifier)))
                         .findFirst().orElse(new QueryAnswer());
             }
-            explanation.add((Answer) printer.graqlString(false, inferredAnswer));
+            explanation.add(Answer.create(inferredAnswer));
         });
         return explanation;
     }

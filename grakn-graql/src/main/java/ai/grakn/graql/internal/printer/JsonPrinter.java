@@ -1,9 +1,9 @@
 /*
  * Grakn - A Distributed Semantic Database
- * Copyright (C) 2016  Grakn Labs Limited
+ * Copyright (C) 2016-2018 Grakn Labs Limited
  *
  * Grakn is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
+ * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
@@ -40,7 +40,7 @@ class JsonPrinter implements Printer<Json> {
     }
 
     @Override
-    public Json graqlString(boolean inner, Concept concept) {
+    public Json convert(boolean inner, Concept concept) {
         Json json = Json.object("id", concept.getId().getValue());
 
         if (concept.isSchemaConcept()) {
@@ -72,35 +72,35 @@ class JsonPrinter implements Printer<Json> {
     }
 
     @Override
-    public final Json graqlString(boolean inner, boolean bool) {
+    public final Json convert(boolean inner, boolean bool) {
         return Json.make(bool);
     }
 
     @Override
-    public final Json graqlString(boolean inner, Optional<?> optional) {
-        return optional.map(item -> graqlString(inner, item)).orElse(nil());
+    public final Json convert(boolean inner, Optional<?> optional) {
+        return optional.map(item -> convert(inner, item)).orElse(nil());
     }
 
     @Override
-    public final Json graqlString(boolean inner, Collection<?> collection) {
-        return Json.make(collection.stream().map(item -> graqlString(inner, item)).collect(toList()));
+    public final Json convert(boolean inner, Collection<?> collection) {
+        return Json.make(collection.stream().map(item -> convert(inner, item)).collect(toList()));
     }
 
     @Override
-    public final Json graqlString(boolean inner, Map<?, ?> map) {
+    public final Json convert(boolean inner, Map<?, ?> map) {
         Json json = Json.object();
 
         map.forEach((Object key, Object value) -> {
             if (key instanceof Var) key = ((Var) key).getValue();
             String keyString = key == null ? "" : key.toString();
-            json.set(keyString, graqlString(true, value));
+            json.set(keyString, convert(true, value));
         });
 
         return json;
     }
 
     @Override
-    public final Json graqlStringDefault(boolean inner, Object object) {
+    public final Json convertDefault(boolean inner, Object object) {
         return Json.make(object);
     }
 }
