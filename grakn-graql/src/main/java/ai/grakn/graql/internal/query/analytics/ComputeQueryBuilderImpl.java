@@ -1,9 +1,9 @@
 /*
  * Grakn - A Distributed Semantic Database
- * Copyright (C) 2016  Grakn Labs Limited
+ * Copyright (C) 2016-2018 Grakn Labs Limited
  *
  * Grakn is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
+ * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
@@ -21,8 +21,10 @@ package ai.grakn.graql.internal.query.analytics;
 import ai.grakn.GraknTx;
 import ai.grakn.graql.ComputeQueryBuilder;
 import ai.grakn.graql.analytics.ClusterQuery;
+import ai.grakn.graql.analytics.CorenessQuery;
 import ai.grakn.graql.analytics.CountQuery;
 import ai.grakn.graql.analytics.DegreeQuery;
+import ai.grakn.graql.analytics.KCoreQuery;
 import ai.grakn.graql.analytics.MaxQuery;
 import ai.grakn.graql.analytics.MeanQuery;
 import ai.grakn.graql.analytics.MedianQuery;
@@ -37,10 +39,8 @@ import java.util.Optional;
 
 /**
  * This class implements ComputeQueryBuilder.
- * <p>
  *
  * @author Jason Liu
- * @author Sheldon Hall
  */
 
 public class ComputeQueryBuilderImpl implements ComputeQueryBuilder {
@@ -105,6 +105,16 @@ public class ComputeQueryBuilderImpl implements ComputeQueryBuilder {
     @Override
     public ClusterQuery<Map<String, Long>> cluster() {
         return new ClusterQueryImpl<>(tx);
+    }
+
+    @Override
+    public KCoreQuery kCore() {
+        return new KCoreQueryImpl(tx);
+    }
+
+    @Override
+    public CorenessQuery coreness() {
+        return new CorenessQueryImpl(tx);
     }
 
     @Override

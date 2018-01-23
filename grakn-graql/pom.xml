@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ Grakn - A Distributed Semantic Database
-  ~ Copyright (C) 2016  Grakn Labs Limited
+  ~ Copyright (C) 2016-2018 Grakn Labs Limited
   ~
   ~ Grakn is free software: you can redistribute it and/or modify
-  ~ it under the terms of the GNU General Public License as published by
+  ~ it under the terms of the GNU Affero General Public License as published by
   ~ the Free Software Foundation, either version 3 of the License, or
   ~ (at your option) any later version.
   ~
@@ -33,6 +33,10 @@
     <dependencies>
         <dependency>
             <groupId>ai.grakn</groupId>
+            <artifactId>grakn-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ai.grakn</groupId>
             <artifactId>grakn-kb</artifactId>
         </dependency>
         <dependency>
@@ -44,21 +48,8 @@
             <artifactId>annotations</artifactId>
         </dependency>
         <dependency>
-            <groupId>ai.grakn</groupId>
-            <artifactId>grakn-core</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr4-runtime</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.javatuples</groupId>
-            <artifactId>javatuples</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-math3</artifactId>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>

@@ -1,9 +1,9 @@
 /*
  * Grakn - A Distributed Semantic Database
- * Copyright (C) 2016  Grakn Labs Limited
+ * Copyright (C) 2016-2018 Grakn Labs Limited
  *
  * Grakn is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
+ * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
@@ -96,6 +96,10 @@ public class GraqlQueryException extends GraknException {
 
     public static GraqlQueryException labelNotFound(Label label) {
         return new GraqlQueryException(ErrorMessage.LABEL_NOT_FOUND.getMessage(label));
+    }
+
+    public static GraqlQueryException kCoreOnRelationshipType(Label label) {
+        return create("cannot compute coreness of relationship type %s.", label.getValue());
     }
 
     public static GraqlQueryException deleteSchemaConcept(SchemaConcept schemaConcept) {
@@ -262,6 +266,10 @@ public class GraqlQueryException extends GraknException {
 
     public static GraqlQueryException instanceDoesNotExist() {
         return new GraqlQueryException(ErrorMessage.INSTANCE_DOES_NOT_EXIST.getMessage());
+    }
+
+    public static GraqlQueryException kValueSmallerThanTwo() {
+        return new GraqlQueryException(ErrorMessage.K_SMALLER_THAN_TWO.getMessage());
     }
 
     public static GraqlQueryException resourceMustBeANumber(AttributeType.DataType dataType, Label resourceType) {

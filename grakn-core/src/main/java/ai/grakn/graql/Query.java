@@ -1,9 +1,9 @@
 /*
  * Grakn - A Distributed Semantic Database
- * Copyright (C) 2016  Grakn Labs Limited
+ * Copyright (C) 2016-2018 Grakn Labs Limited
  *
  * Grakn is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
+ * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
@@ -47,9 +47,20 @@ public interface Query<T> {
 
     /**
      * Execute the query and return a human-readable stream of results
+     *
+     * @deprecated use {@link #results(GraqlConverter)}}
+     */
+    @Deprecated
+    @CheckReturnValue
+    default Stream<String> resultsString(Printer printer) {
+        return results(printer);
+    }
+
+    /**
+     * Execute the query and return a converted stream of results
      */
     @CheckReturnValue
-    Stream<String> resultsString(Printer printer);
+    <T> Stream<T> results(GraqlConverter<?, T> converter);
 
     /**
      * Whether this query will modify the graph

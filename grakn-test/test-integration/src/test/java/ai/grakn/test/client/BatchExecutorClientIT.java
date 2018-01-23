@@ -1,9 +1,9 @@
 /*
  * Grakn - A Distributed Semantic Database
- * Copyright (C) 2016  Grakn Labs Limited
+ * Copyright (C) 2016-2018 Grakn Labs Limited
  *
  * Grakn is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
+ * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
@@ -121,6 +121,7 @@ public class BatchExecutorClientIT {
         }
     }
 
+    @Ignore("This test interferes with other tests using the BEC (they probably use the same HystrixRequestLog)")
     @Test
     public void whenSending100Queries_TheyAreSentInBatch() {
         List<Observable<QueryResponse>> all = new ArrayList<>();

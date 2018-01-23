@@ -1,9 +1,9 @@
 /*
  * Grakn - A Distributed Semantic Database
- * Copyright (C) 2016  Grakn Labs Limited
+ * Copyright (C) 2016-2018 Grakn Labs Limited
  *
  * Grakn is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
+ * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
@@ -23,7 +23,6 @@ import ai.grakn.graql.internal.gremlin.spanningtree.graph.WeightedGraph;
 import ai.grakn.graql.internal.gremlin.spanningtree.util.Weighted;
 import ai.grakn.graql.internal.util.Partition;
 import com.google.common.collect.ImmutableMap;
-import org.javatuples.Pair;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -117,14 +116,13 @@ public class ChuLiuEdmonds {
             // Find edges connecting SCCs on the path from newEdge.destination to newEdge.source
             final List<Weighted<DirectedEdge<V>>> cycle = getCycle(newEdge);
             // build up list of queues that need to be merged, with the edge they would exclude
-            final List<Pair<EdgeQueueMap.EdgeQueue<V>, Weighted<DirectedEdge<V>>>> queuesToMerge =
-                    new ArrayList<>(cycle.size());
+            final List<EdgeQueueMap.QueueAndReplace<V>> queuesToMerge = new ArrayList<>(cycle.size());
             for (Weighted<DirectedEdge<V>> currentEdge : cycle) {
                 final V destination = stronglyConnected.componentOf(currentEdge.val.destination);
                 final EdgeQueueMap.EdgeQueue<V> queue = unseenIncomingEdges.queueByDestination.get(destination);
                 // if we choose an edge in `queue`, we'll have to throw out `currentEdge` at the end
                 // (each SCC can have only one incoming edge).
-                queuesToMerge.add(Pair.with(queue, currentEdge));
+                queuesToMerge.add(EdgeQueueMap.QueueAndReplace.of(queue, currentEdge));
                 unseenIncomingEdges.queueByDestination.remove(destination);
             }
             // Merge all SCCs on the cycle into one

@@ -1,9 +1,9 @@
 /*
  * Grakn - A Distributed Semantic Database
- * Copyright (C) 2016  Grakn Labs Limited
+ * Copyright (C) 2016-2018 Grakn Labs Limited
  *
  * Grakn is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
+ * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
@@ -25,7 +25,7 @@ import ai.grakn.graql.admin.ReasonerQuery;
 import ai.grakn.graql.admin.Unifier;
 import ai.grakn.graql.internal.pattern.property.HasAttributeTypeProperty;
 import ai.grakn.graql.internal.pattern.property.IsaProperty;
-import ai.grakn.graql.internal.reasoner.ResolutionPlan;
+import ai.grakn.graql.internal.reasoner.plan.SimplePlanner;
 import ai.grakn.graql.internal.reasoner.atom.Atom;
 import ai.grakn.graql.internal.reasoner.atom.predicate.IdPredicate;
 
@@ -101,8 +101,8 @@ public abstract class TypeAtom extends Binary{
     @Override
     public int computePriority(Set<Var> subbedVars){
         int priority = super.computePriority(subbedVars);
-        priority += ResolutionPlan.IS_TYPE_ATOM;
-        priority += getSchemaConcept() == null && !isRelation()? ResolutionPlan.NON_SPECIFIC_TYPE_ATOM : 0;
+        priority += SimplePlanner.IS_TYPE_ATOM;
+        priority += getSchemaConcept() == null && !isRelation()? SimplePlanner.NON_SPECIFIC_TYPE_ATOM : 0;
         return priority;
     }
 

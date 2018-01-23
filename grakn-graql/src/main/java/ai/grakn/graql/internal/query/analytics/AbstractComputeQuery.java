@@ -1,9 +1,9 @@
 /*
  * Grakn - A Distributed Semantic Database
- * Copyright (C) 2016  Grakn Labs Limited
+ * Copyright (C) 2016-2018 Grakn Labs Limited
  *
  * Grakn is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
+ * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
@@ -32,6 +32,7 @@ import ai.grakn.concept.Type;
 import ai.grakn.exception.GraqlQueryException;
 import ai.grakn.graql.ComputeQuery;
 import ai.grakn.graql.Graql;
+import ai.grakn.graql.GraqlConverter;
 import ai.grakn.graql.Pattern;
 import ai.grakn.graql.Printer;
 import ai.grakn.graql.internal.util.StringConverter;
@@ -99,6 +100,7 @@ abstract class AbstractComputeQuery<T> implements ComputeQuery<T> {
 
     @Override
     public Stream<String> resultsString(Printer printer) {
+        // TODO: clarify or remove this special-case behaviour
         Object computeResult = execute();
         if (computeResult instanceof Map) {
             if (((Map) computeResult).isEmpty()) {
@@ -116,6 +118,11 @@ abstract class AbstractComputeQuery<T> implements ComputeQuery<T> {
             }
         }
         return Stream.of(printer.graqlString(computeResult));
+    }
+
+    @Override
+    public <S> Stream<S> results(GraqlConverter<?, S> converter) {
+        return Stream.of(converter.convert(execute()));
     }
 
     void initSubGraph() {

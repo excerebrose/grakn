@@ -1,9 +1,9 @@
 /*
  * Grakn - A Distributed Semantic Database
- * Copyright (C) 2016  Grakn Labs Limited
+ * Copyright (C) 2016-2018 Grakn Labs Limited
  *
  * Grakn is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
+ * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
@@ -22,9 +22,9 @@ import ai.grakn.GraknTx;
 import ai.grakn.concept.SchemaConcept;
 import ai.grakn.concept.Type;
 import ai.grakn.exception.GraqlQueryException;
+import ai.grakn.graql.GraqlConverter;
 import ai.grakn.graql.InsertQuery;
 import ai.grakn.graql.Match;
-import ai.grakn.graql.Printer;
 import ai.grakn.graql.admin.Answer;
 import ai.grakn.graql.admin.InsertQueryAdmin;
 import ai.grakn.graql.admin.MatchAdmin;
@@ -95,8 +95,8 @@ class InsertQueryImpl implements InsertQueryAdmin {
     }
 
     @Override
-    public Stream<String> resultsString(Printer printer) {
-        return stream().map(printer::graqlString);
+    public <T> Stream<T> results(GraqlConverter<?, T> converter) {
+        return stream().map(converter::convert);
     }
 
     @Override
